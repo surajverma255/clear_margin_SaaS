@@ -1,6 +1,7 @@
 "use client";
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper } from "@tanstack/react-table";
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 
 type Order = {
   id: string;
@@ -9,19 +10,27 @@ type Order = {
   net_sales_amount: number;
   financial_status: string;
   fulfillment_status: string;
+  channel: string;
 };
 
 interface OrdersTableProps {
   orders: Order[];
 }
 
+const channelLogos: Record<string, string> = {
+  shopify: "/logos/shopify.png",
+  amazon: "/logos/amazon.png",
+  flipkart: "/logos/flipkart.png",
+};
+
 export default function OrdersTable({ orders }: OrdersTableProps) {
   const columnHelper = createColumnHelper<Order>();
+
   const columns = [
     columnHelper.accessor("external_order_id", { header: "Order ID" }),
     columnHelper.accessor("order_date", { 
       header: "Date",
-      cell: info => new Date(info.getValue()).toLocaleString()  // 👈 Proper formatted date
+      cell: info => new Date(info.getValue()).toLocaleString()
     }),
     columnHelper.accessor("net_sales_amount", {
       header: "Amount",
@@ -30,7 +39,28 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
     columnHelper.accessor("financial_status", { header: "Payment" }),
     columnHelper.accessor("fulfillment_status", { 
       header: "Fulfillment",
-      cell: info => info.getValue() || "-"   // 👈 null/empty handle
+      cell: info => info.getValue() || "-"
+    }),
+    columnHelper.accessor("channel", {
+      header: "Channel",
+      cell: info => {
+        const channel = info.getValue()?.toLowerCase();
+        const logo = channelLogos[channel] || "";
+        return (
+          <div className="flex items-center gap-2">
+            {logo && (
+              <Image
+                src={logo}
+                alt={channel}
+                width={32}   // 👈 medium size
+                height={32}  // 👈 medium size
+                className="rounded-md"
+              />
+            )}
+            <span className="capitalize">{channel}</span>
+          </div>
+        );
+      }
     }),
   ];
 
