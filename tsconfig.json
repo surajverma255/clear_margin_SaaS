@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "module": "NodeNext", 
+    "moduleResolution": "NodeNext", 
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",                       // 👈 Added
+    "paths": {                            // 👈 Added
+      "@/*": ["*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "ingest/**/*.ts",
+    "lib/**/*.ts",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
